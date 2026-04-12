@@ -1,0 +1,148 @@
+/* 1. Main Container (Full screen, flex center) */
+.login-container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* --- BACKGROUND IMAGE OPTION --- */
+  /* Add your sewing machine image to your 'assets' folder and uncomment this: */
+  /* background-image: url('../../assets/sewing-machine-bg.jpg'); */
+  
+  /* Fallback color if image doesn't load */
+  background-color: #f7f9fb; 
+  background-size: cover;
+  background-position: center;
+}
+
+/* 2. The White Card */
+.login-card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px; /* Limits the card width */
+  text-align: center;
+}
+
+/* 3. Header Section (Logo + Names) */
+.login-header {
+  margin-bottom: 30px;
+}
+
+.logo-circle {
+  background: #1a1a1a;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 15px; /* Centers the circle */
+}
+
+.logo-icon {
+  color: white;
+  font-size: 28px;
+  font-weight: 300;
+}
+
+.brand-name {
+  font-size: 24px;
+  margin: 0;
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+.sub-brand {
+  color: #888;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+/* 4. Tab Container */
+.tab-container {
+  display: flex;
+  background: #f3f4f6; /* Lighter grey for the container */
+  padding: 4px;
+  border-radius: 10px;
+  margin: 25px 0;
+}
+
+.tab-btn {
+  flex: 1;
+  border: none;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+  font-weight: 500;
+  color: #666;
+  transition: 0.3s;
+}
+
+/* The active tab style */
+.tab-btn.active {
+  background: white;
+  color: #1a1a1a;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* 5. Form Fields and Labels */
+.form-group {
+  text-align: left; /* Essential for aligning labels to the left */
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box; /* Ensures padding doesn't push past card edge */
+  font-size: 14px;
+}
+
+.form-group input:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+/* Error message styling */
+.error-msg {
+  color: #cf1322;
+  background-color: #fff1f0;
+  border: 1px solid #ffa39e;
+  padding: 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+/* 6. The Login Button */
+.submit-btn {
+  width: 100%;
+  background: black;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #333;
+}
