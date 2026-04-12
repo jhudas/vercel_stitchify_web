@@ -140,7 +140,6 @@ const Inventory = () => {
                 {!loading && !error && filtered.map(item => {
                   const badge = STATUS_BADGE[item.status] || STATUS_BADGE.pending;
                   const svcBadge = {
-                    rental:        { bg: '#eff6ff', color: '#3b82f6' },
                     customization: { bg: '#f5f3ff', color: '#7c3aed' },
                     printing:      { bg: '#f0fdf4', color: '#10b981' },
                   }[item.serviceType] || {};
@@ -216,7 +215,6 @@ const Inventory = () => {
               <div className="modal-field">
                 <label>Service Type</label>
                 <select value={form.serviceType} onChange={e => setForm(f => ({ ...f, serviceType: e.target.value }))}>
-                  <option value="rental">Rental</option>
                   <option value="customization">Customization</option>
                   <option value="printing">Printing</option>
                 </select>
