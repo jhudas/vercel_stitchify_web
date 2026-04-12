@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar';
 import './Dashboard.css';
 import './Rentals.css';
 
-const API = 'http://localhost:5000/api/rentals';
+const API = 'https://stitchify-backend.onrender.com/api/rentals';
 
 const STATUS_STYLE = {
   active:   { bg: '#f0fdf4', color: '#16a34a' },

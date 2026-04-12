@@ -27,7 +27,7 @@ const LogIn = () => {
       return;
     }
 
-    const url = `http://localhost:5000/api/auth/${isLogin ? 'login' : 'register'}`;
+    const url = `https://stitchify-backend.onrender.com/api/auth/${isLogin ? 'login' : 'register'}`;
     const payload = isLogin
       ? { username: usernameOrEmail, password }
       : { username: usernameOrEmail, email, password };

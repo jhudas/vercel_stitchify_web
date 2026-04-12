@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar';
 import './Dashboard.css';
 import './Inventory.css';
 
-const API = 'http://localhost:5000/api/inventory';
+const API = 'https://stitchify-backend.onrender.com/api/inventory';
 
 const SERVICE_TYPES = ['All Services', 'rental', 'customization', 'printing'];
 
