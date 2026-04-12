@@ -248,3 +248,10 @@
 }
 
 .modal-save:hover { background: #1e293b; }
+
+/* Order status row */
+.order-status-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

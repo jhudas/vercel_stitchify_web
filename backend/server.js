@@ -5,6 +5,7 @@ import connectDB from './src/config/db.js';
 import authRoutes from './src/routes/authRoutes.js';
 import inventoryRoutes from './src/routes/inventoryRoutes.js';
 import rentalRoutes from './src/routes/rentalRoutes.js';
+import orderRoutes from './src/routes/orderRoutes.js';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/rentals', rentalRoutes);
+app.use('/api/orders', orderRoutes);
 
 const startServer = async () => {
   await connectDB();
