@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Bell, Plus, Trash2, X, ChevronDown } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import './Dashboard.css';
-import './Inventory.css';
+import './Transaction.css';
 
 const API = 'https://stitchify-backend.onrender.com/api/orders';
 
