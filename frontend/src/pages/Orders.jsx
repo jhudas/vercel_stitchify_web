@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Bell, Plus, Trash2, X, ChevronDown } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import './Dashboard.css';
@@ -19,7 +19,6 @@ const STATUS_STYLE = {
 };
 
 const fmt = (d) => d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) : '';
-const toInputDate = (d) => d ? new Date(d).toISOString().split('T')[0] : '';
 
 const emptyForm = { type: 'customization', customer: '', contact: '', description: '', qty: '', price: '', dueDate: '', status: 'pending' };
 

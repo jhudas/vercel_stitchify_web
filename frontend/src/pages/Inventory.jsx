@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Bell, Plus, Pencil, Trash2, X, ChevronDown } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import './Dashboard.css';
@@ -6,7 +6,7 @@ import './Inventory.css';
 
 const API = 'https://stitchify-backend.onrender.com/api/inventory';
 
-const SERVICE_TYPES = ['All Services', 'rental', 'customization', 'printing'];
+const SERVICE_TYPES = ['All Services', 'customization', 'printing'];
 
 const STATUS_BADGE = {
   pending:      { bg: '#fffbeb', color: '#d97706' },
@@ -14,8 +14,12 @@ const STATUS_BADGE = {
   done:         { bg: '#f0fdf4', color: '#16a34a' },
 };
 
-const priceLabel = { rental: 'Rental', customization: 'Custom', printing: 'Print' };
-const emptyForm  = { name: '', status: 'pending', serviceType: 'rental', quantity: '', price: '' };
+const SVC_BADGE = {
+  customization: { bg: '#f5f3ff', color: '#7c3aed' },
+  printing:      { bg: '#f0fdf4', color: '#10b981' },
+};
+
+const emptyForm = { name: '', status: 'pending', serviceType: 'customization', quantity: '', price: '' };
 
 const Inventory = () => {
   const [items, setItems]         = useState([]);
@@ -139,10 +143,7 @@ const Inventory = () => {
                 )}
                 {!loading && !error && filtered.map(item => {
                   const badge = STATUS_BADGE[item.status] || STATUS_BADGE.pending;
-                  const svcBadge = {
-                    customization: { bg: '#f5f3ff', color: '#7c3aed' },
-                    printing:      { bg: '#f0fdf4', color: '#10b981' },
-                  }[item.serviceType] || {};
+                  const svcBadge = SVC_BADGE[item.serviceType] || {};
                   return (
                     <tr key={item._id}>
                       <td>{item.name}</td>
