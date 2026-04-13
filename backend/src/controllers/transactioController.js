@@ -1,4 +1,4 @@
-import InventoryItem from '../models/InventoryItem.js';
+import InventoryItem from '../models/transactionsitem.js';
 
 // GET /api/inventory
 export const getItems = async (req, res) => {
