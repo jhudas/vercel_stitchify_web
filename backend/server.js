@@ -6,6 +6,7 @@ import authRoutes from './src/routes/authRoutes.js';
 import transactionRoutes from './src/routes/transactionRoutes.js';
 import rentalRoutes from './src/routes/rentalRoutes.js';
 import orderRoutes from './src/routes/orderRoutes.js';
+import dashboardRoutes from './src/routes/dashboardRoutes.js';
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/rentals', rentalRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 const startServer = async () => {
   await connectDB();
