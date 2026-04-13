@@ -103,7 +103,7 @@ const Inventory = () => {
           {/* Title row */}
           <div className="inv-title-row">
             <div>
-              <h1 className="page-title">Inventory Management</h1>
+              <h1 className="page-title">Transactions</h1>
               <p className="page-subtitle">Manage your garments and printing items</p>
             </div>
             <button className="add-item-btn" onClick={openAdd}>
