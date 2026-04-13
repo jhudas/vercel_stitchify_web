@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const InventoryItemSchema = new mongoose.Schema({
+const TransactionItemSchema = new mongoose.Schema({
   name:        { type: String, required: [true, 'Name is required'] },
   status:      { type: String, enum: ['pending', 'on process', 'done'], required: true, default: 'pending' },
   serviceType: { type: String, enum: ['customization', 'printing'], required: true },
@@ -8,4 +8,4 @@ const InventoryItemSchema = new mongoose.Schema({
   price:       { type: Number, required: true, min: 0 },
 }, { timestamps: true });
 
-export default mongoose.model('InventoryItem', InventoryItemSchema);
+export default mongoose.model('Transaction', TransactionItemSchema);

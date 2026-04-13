@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar';
 import './Dashboard.css';
 import './Inventory.css';
 
-const API = 'https://stitchify-backend.onrender.com/api/inventory';
+const API = 'https://stitchify-backend.onrender.com/api/transactions';
 
 const SERVICE_TYPES = ['All Services', 'customization', 'printing'];
 
@@ -21,7 +21,7 @@ const SVC_BADGE = {
 
 const emptyForm = { name: '', status: 'pending', serviceType: 'customization', quantity: '', price: '' };
 
-const Inventory = () => {
+const Transaction = () => {
   const [items, setItems]         = useState([]);
   const [loading, setLoading]     = useState(true);
   const [error, setError]         = useState('');
@@ -95,7 +95,7 @@ const Inventory = () => {
 
       <main className="main-content">
         <header className="main-header">
-          <h2 className="header-title">STITCHIFY</h2>
+          <h2 className="header-title">Choscemkyn Garments</h2>
           <button className="bell-btn"><Bell size={18} /></button>
         </header>
 
@@ -114,7 +114,7 @@ const Inventory = () => {
           {/* Table card */}
           <div className="inv-card">
             <div className="inv-card-header">
-              <h3 className="inv-card-title">Inventory Items</h3>
+              <h3 className="inv-card-title">Transaction Items</h3>
               <div className="inv-filter-wrap">
                 <select className="inv-filter" value={filter} onChange={e => setFilter(e.target.value)}>
                   {SERVICE_TYPES.map(s => <option key={s}>{s}</option>)}
@@ -234,4 +234,4 @@ const Inventory = () => {
   );
 };
 
-export default Inventory;
+export default Transaction;

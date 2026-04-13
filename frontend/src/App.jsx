@@ -3,7 +3,7 @@ import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import LogIn from './pages/LogInSignUp/LogIn';
 import Dashboard from './pages/Dashboard';
-import Inventory from './pages/Inventory';
+import Transaction from './pages/Transaction';
 import Rentals from './pages/Rentals';
 import Orders from './pages/Orders';
 
@@ -18,7 +18,7 @@ function App() {
     <Routes>
       <Route path="/" element={<LogIn />} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-      <Route path="/inventory" element={<ProtectedRoute><Inventory /></ProtectedRoute>} />
+      <Route path="/inventory" element={<ProtectedRoute><Transaction /></ProtectedRoute>} />
       <Route path="/rentals"   element={<ProtectedRoute><Rentals /></ProtectedRoute>} />
       <Route path="/orders"    element={<ProtectedRoute><Orders /></ProtectedRoute>} />
       <Route path="*" element={<Navigate to="/" replace />} />
