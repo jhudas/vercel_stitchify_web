@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Bell, Plus, Pencil, Trash2, X } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import './Dashboard.css';
@@ -86,7 +86,7 @@ const Rentals = () => {
 
       <main className="main-content">
         <header className="main-header">
-          <h2 className="header-title">STITCHIFY</h2>
+          <h2 className="header-title">Choscemkyn Garments</h2>
           <button className="bell-btn"><Bell size={18} /></button>
         </header>
 

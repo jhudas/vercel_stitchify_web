@@ -1,18 +1,14 @@
-import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
-  LayoutDashboard, Package, Shirt, ClipboardList, CreditCard, CheckCircle, TrendingUp, LogOut
+  LayoutDashboard, Package, Shirt, ClipboardList, LogOut
 } from 'lucide-react';
 import '../pages/Dashboard.css';
 
 const menuItems = [
-  { label: 'Dashboard',     icon: LayoutDashboard, path: '/dashboard' },
-  { label: 'Transactions',     icon: Package,         path: '/inventory' },
-  { label: 'Rentals',       icon: Shirt,           path: '/rentals' },
-  { label: 'Orders',        icon: ClipboardList,   path: '/orders' },
-  { label: 'Debts',         icon: CreditCard,      path: '/debts' },
-  { label: 'Finished Items',icon: CheckCircle,     path: '/finished-items' },
-  { label: 'Sales Reports', icon: TrendingUp,      path: '/sales-reports' },
+  { label: 'Dashboard',      icon: LayoutDashboard, path: '/dashboard' },
+  { label: 'Transactions',   icon: Package,         path: '/inventory' },
+  { label: 'Rentals',        icon: Shirt,           path: '/rentals' },
+  { label: 'Orders',         icon: ClipboardList,   path: '/orders' },
 ];
 
 const Sidebar = ({ username }) => {

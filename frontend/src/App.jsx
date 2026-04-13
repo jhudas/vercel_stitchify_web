@@ -1,6 +1,5 @@
-import React from 'react';
-import './App.css';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import './App.css';
 import LogIn from './pages/LogInSignUp/LogIn';
 import Dashboard from './pages/Dashboard';
 import Transaction from './pages/Transaction';
