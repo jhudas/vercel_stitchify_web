@@ -7,7 +7,7 @@ import '../pages/Dashboard.css';
 
 const menuItems = [
   { label: 'Dashboard',     icon: LayoutDashboard, path: '/dashboard' },
-  { label: 'Inventory',     icon: Package,         path: '/inventory' },
+  { label: 'Transactions',     icon: Package,         path: '/inventory' },
   { label: 'Rentals',       icon: Shirt,           path: '/rentals' },
   { label: 'Orders',        icon: ClipboardList,   path: '/orders' },
   { label: 'Debts',         icon: CreditCard,      path: '/debts' },
