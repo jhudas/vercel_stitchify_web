@@ -89,7 +89,7 @@ const Orders = () => {
       <Sidebar />
       <main className="main-content">
         <header className="main-header">
-          <h2 className="header-title">Choscemkyn Garments</h2>
+          <h2 className="header-title">Stitchify</h2>
           <button className="bell-btn"><Bell size={18} /></button>
         </header>
 
