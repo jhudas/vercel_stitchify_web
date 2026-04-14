@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Bell, Plus, Pencil, Trash2, X, ChevronDown } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
-import { apiFetch } from '../services/api';
 import './Dashboard.css';
 import './Transaction.css';
 
-const API_PATH = '/transactions';
+const API = 'https://stitchify-backend.onrender.com/api/transactions';
 
 const SERVICE_TYPES = ['All Services', 'customization', 'printing'];
 
@@ -32,20 +31,14 @@ const Transaction = () => {
   const [form, setForm]           = useState(emptyForm);
   const [saving, setSaving]       = useState(false);
 
-  // Fetch items
   const fetchItems = async () => {
-    setLoading(true);
-    setError('');
+    setLoading(true); setError('');
     try {
       const res = await fetch(API);
-      if (!res.ok) throw new Error('Failed to load inventory');
-      const data = await res.json();
-      setItems(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+      if (!res.ok) throw new Error('Failed to load transactions');
+      setItems(await res.json());
+    } catch (err) { setError(err.message); }
+    finally { setLoading(false); }
   };
 
   useEffect(() => { fetchItems(); }, []);
@@ -61,9 +54,7 @@ const Transaction = () => {
       const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Delete failed');
       setItems(prev => prev.filter(i => i._id !== id));
-    } catch (err) {
-      alert(err.message);
-    }
+    } catch (err) { alert(err.message); }
   };
 
   const handleSave = async () => {
@@ -77,31 +68,22 @@ const Transaction = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, quantity: Number(form.quantity), price: Number(form.price) }),
       });
-      if (!res.ok) {
-        const d = await res.json();
-        throw new Error(d.message || 'Save failed');
-      }
+      if (!res.ok) { const d = await res.json(); throw new Error(d.message || 'Save failed'); }
       await fetchItems();
       setShowModal(false);
-    } catch (err) {
-      alert(err.message);
-    } finally {
-      setSaving(false);
-    }
+    } catch (err) { alert(err.message); }
+    finally { setSaving(false); }
   };
 
   return (
     <div className="dashboard-layout">
       <Sidebar />
-
       <main className="main-content">
         <header className="main-header">
           <h2 className="header-title">Choscemkyn Garments</h2>
           <button className="bell-btn"><Bell size={18} /></button>
         </header>
-
         <div className="page-body">
-          {/* Title row */}
           <div className="inv-title-row">
             <div>
               <h1 className="page-title">Transactions</h1>
@@ -111,8 +93,6 @@ const Transaction = () => {
               <Plus size={16} /> Add Item
             </button>
           </div>
-
-          {/* Table card */}
           <div className="inv-card">
             <div className="inv-card-header">
               <h3 className="inv-card-title">Transaction Items</h3>
@@ -123,7 +103,6 @@ const Transaction = () => {
                 <ChevronDown size={14} className="inv-filter-icon" />
               </div>
             </div>
-
             <table className="inv-table">
               <thead>
                 <tr>
@@ -136,53 +115,33 @@ const Transaction = () => {
                 </tr>
               </thead>
               <tbody>
-                {loading && (
-                  <tr><td colSpan={6} className="inv-empty">Loading...</td></tr>
-                )}
-                {!loading && error && (
-                  <tr><td colSpan={6} className="inv-empty inv-error">{error}</td></tr>
-                )}
+                {loading && <tr><td colSpan={6} className="inv-empty">Loading...</td></tr>}
+                {!loading && error && <tr><td colSpan={6} className="inv-empty">{error}</td></tr>}
                 {!loading && !error && filtered.map(item => {
                   const badge = STATUS_BADGE[item.status] || STATUS_BADGE.pending;
                   const svcBadge = SVC_BADGE[item.serviceType] || {};
                   return (
                     <tr key={item._id}>
                       <td>{item.name}</td>
-                      <td>
-                        <span className="inv-badge" style={{ backgroundColor: badge.bg, color: badge.color }}>
-                          {item.status}
-                        </span>
-                      </td>
-                      <td>
-                        <span className="inv-badge" style={{ backgroundColor: svcBadge.bg, color: svcBadge.color }}>
-                          {item.serviceType}
-                        </span>
-                      </td>
+                      <td><span className="inv-badge" style={{ backgroundColor: badge.bg, color: badge.color }}>{item.status}</span></td>
+                      <td><span className="inv-badge" style={{ backgroundColor: svcBadge.bg, color: svcBadge.color }}>{item.serviceType}</span></td>
                       <td>{item.quantity}</td>
                       <td>₱{item.price}</td>
                       <td>
                         <div className="inv-actions">
-                          <button className="inv-action-btn edit" onClick={() => openEdit(item)}>
-                            <Pencil size={15} />
-                          </button>
-                          <button className="inv-action-btn delete" onClick={() => handleDelete(item._id)}>
-                            <Trash2 size={15} />
-                          </button>
+                          <button className="inv-action-btn edit" onClick={() => openEdit(item)}><Pencil size={15} /></button>
+                          <button className="inv-action-btn delete" onClick={() => handleDelete(item._id)}><Trash2 size={15} /></button>
                         </div>
                       </td>
                     </tr>
                   );
                 })}
-                {!loading && !error && filtered.length === 0 && (
-                  <tr><td colSpan={6} className="inv-empty">No items found.</td></tr>
-                )}
+                {!loading && !error && filtered.length === 0 && <tr><td colSpan={6} className="inv-empty">No items found.</td></tr>}
               </tbody>
             </table>
           </div>
         </div>
       </main>
-
-      {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal" onClick={e => e.stopPropagation()}>
@@ -198,12 +157,7 @@ const Transaction = () => {
               ].map(({ label, key, type }) => (
                 <div className="modal-field" key={key}>
                   <label>{label}</label>
-                  <input
-                    type={type}
-                    value={form[key]}
-                    onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
-                    placeholder={label}
-                  />
+                  <input type={type} value={form[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} placeholder={label} />
                 </div>
               ))}
               <div className="modal-field">
@@ -224,9 +178,7 @@ const Transaction = () => {
             </div>
             <div className="modal-footer">
               <button className="modal-cancel" onClick={() => setShowModal(false)}>Cancel</button>
-              <button className="modal-save" onClick={handleSave} disabled={saving}>
-                {saving ? 'Saving...' : editItem ? 'Save Changes' : 'Add Item'}
-              </button>
+              <button className="modal-save" onClick={handleSave} disabled={saving}>{saving ? 'Saving...' : editItem ? 'Save Changes' : 'Add Item'}</button>
             </div>
           </div>
         </div>

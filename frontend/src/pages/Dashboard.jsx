@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Shirt, ClipboardList, CreditCard, CheckCircle, Bell } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
-import { apiFetch } from '../services/api';
 import './Dashboard.css';
+
+const API = 'https://stitchify-backend.onrender.com/api/dashboard/stats';
 
 const StatCard = ({ title, count, icon: Icon, iconBg }) => (
   <div className="stat-card">

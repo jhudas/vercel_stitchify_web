@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Bell, Plus, Trash2, X, ChevronDown } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
-import { apiFetch } from '../services/api';
 import './Dashboard.css';
 import './Transaction.css';
 
-const API_PATH = '/orders';
+const API = 'https://stitchify-backend.onrender.com/api/orders';
 
 const TYPE_BADGE = {
   customization: { bg: '#f5f3ff', color: '#7c3aed' },
@@ -35,7 +34,7 @@ const Orders = () => {
   const fetchOrders = async () => {
     setLoading(true); setError('');
     try {
-      const res = await apiFetch(API_PATH);
+      const res = await fetch(API);
       if (!res.ok) throw new Error('Failed to load orders');
       setOrders(await res.json());
     } catch (err) { setError(err.message); }
@@ -48,9 +47,8 @@ const Orders = () => {
 
   const handleStatusChange = async (id, status) => {
     try {
-      const res = await fetch(`${API}/${id}`, {
+      const res = await apiFetch(`${API_PATH}/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
       });
       if (!res.ok) throw new Error('Update failed');
@@ -61,7 +59,7 @@ const Orders = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this order?')) return;
     try {
-      const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
+      const res = await apiFetch(`${API_PATH}/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Delete failed');
       setOrders(prev => prev.filter(o => o._id !== id));
     } catch (err) { alert(err.message); }
@@ -72,10 +70,9 @@ const Orders = () => {
     setSaving(true);
     try {
       const method = editOrder ? 'PUT' : 'POST';
-      const url    = editOrder ? `${API}/${editOrder._id}` : API;
-      const res = await fetch(url, {
+      const path   = editOrder ? `${API_PATH}/${editOrder._id}` : API_PATH;
+      const res = await apiFetch(path, {
         method,
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, qty: Number(form.qty), price: Number(form.price) }),
       });
       if (!res.ok) { const d = await res.json(); throw new Error(d.message || 'Save failed'); }

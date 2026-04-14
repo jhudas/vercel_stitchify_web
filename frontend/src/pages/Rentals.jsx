@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Bell, Plus, Pencil, Trash2, X } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
-import { apiFetch } from '../services/api';
 import './Dashboard.css';
 import './Rentals.css';
 
-const API_PATH = '/rentals';
+const API = 'https://stitchify-backend.onrender.com/api/rentals';
 
 const STATUS_STYLE = {
   active:   { bg: '#f0fdf4', color: '#16a34a' },
@@ -15,8 +14,7 @@ const STATUS_STYLE = {
 
 const fmt = (dateStr) => {
   if (!dateStr) return '';
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
 };
 
 const toInputDate = (dateStr) => {
@@ -27,18 +25,18 @@ const toInputDate = (dateStr) => {
 const emptyForm = { item: '', customer: '', contact: '', rentalDate: '', dueDate: '', price: '', status: 'active' };
 
 const Rentals = () => {
-  const [rentals, setRentals]     = useState([]);
-  const [loading, setLoading]     = useState(true);
-  const [error, setError]         = useState('');
-  const [showModal, setShowModal] = useState(false);
+  const [rentals, setRentals]       = useState([]);
+  const [loading, setLoading]       = useState(true);
+  const [error, setError]           = useState('');
+  const [showModal, setShowModal]   = useState(false);
   const [editRental, setEditRental] = useState(null);
-  const [form, setForm]           = useState(emptyForm);
-  const [saving, setSaving]       = useState(false);
+  const [form, setForm]             = useState(emptyForm);
+  const [saving, setSaving]         = useState(false);
 
   const fetchRentals = async () => {
     setLoading(true); setError('');
     try {
-      const res = await apiFetch(API_PATH);
+      const res = await fetch(API);
       if (!res.ok) throw new Error('Failed to load rentals');
       setRentals(await res.json());
     } catch (err) { setError(err.message); }
@@ -84,45 +82,34 @@ const Rentals = () => {
   return (
     <div className="dashboard-layout">
       <Sidebar />
-
       <main className="main-content">
         <header className="main-header">
           <h2 className="header-title">Choscemkyn Garments</h2>
           <button className="bell-btn"><Bell size={18} /></button>
         </header>
-
         <div className="page-body">
           <div className="inv-title-row">
             <div>
               <h1 className="page-title">Rental Tracking</h1>
               <p className="page-subtitle">Manage garment rentals and track due dates</p>
             </div>
-            <button className="add-item-btn" onClick={openAdd}>
-              <Plus size={16} /> New Rental
-            </button>
+            <button className="add-item-btn" onClick={openAdd}><Plus size={16} /> New Rental</button>
           </div>
-
           <div className="inv-card">
             <div className="inv-card-header">
               <h3 className="inv-card-title">Active &amp; Past Rentals</h3>
             </div>
-
             <table className="inv-table">
               <thead>
                 <tr>
-                  <th>Item</th>
-                  <th>Customer</th>
-                  <th>Contact</th>
-                  <th>Rental Date</th>
-                  <th>Due Date</th>
-                  <th>Price</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th>Item</th><th>Customer</th><th>Contact</th>
+                  <th>Rental Date</th><th>Due Date</th><th>Price</th>
+                  <th>Status</th><th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {loading && <tr><td colSpan={8} className="inv-empty">Loading...</td></tr>}
-                {!loading && error && <tr><td colSpan={8} className="inv-empty inv-error">{error}</td></tr>}
+                {!loading && error && <tr><td colSpan={8} className="inv-empty">{error}</td></tr>}
                 {!loading && !error && rentals.map(r => {
                   const s = STATUS_STYLE[r.status] || STATUS_STYLE.active;
                   return (
@@ -133,11 +120,7 @@ const Rentals = () => {
                       <td>{fmt(r.rentalDate)}</td>
                       <td>{fmt(r.dueDate)}</td>
                       <td>₱{r.price.toLocaleString()}</td>
-                      <td>
-                        <span className="inv-badge" style={{ backgroundColor: s.bg, color: s.color }}>
-                          {r.status}
-                        </span>
-                      </td>
+                      <td><span className="inv-badge" style={{ backgroundColor: s.bg, color: s.color }}>{r.status}</span></td>
                       <td>
                         <div className="inv-actions">
                           <button className="inv-action-btn edit" onClick={() => openEdit(r)}><Pencil size={15} /></button>
@@ -147,16 +130,12 @@ const Rentals = () => {
                     </tr>
                   );
                 })}
-                {!loading && !error && rentals.length === 0 && (
-                  <tr><td colSpan={8} className="inv-empty">No rentals found.</td></tr>
-                )}
+                {!loading && !error && rentals.length === 0 && <tr><td colSpan={8} className="inv-empty">No rentals found.</td></tr>}
               </tbody>
             </table>
           </div>
         </div>
       </main>
-
-      {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal" onClick={e => e.stopPropagation()}>
@@ -166,12 +145,12 @@ const Rentals = () => {
             </div>
             <div className="modal-body">
               {[
-                { label: 'Item',         key: 'item',       type: 'text'   },
-                { label: 'Customer',     key: 'customer',   type: 'text'   },
-                { label: 'Contact',      key: 'contact',    type: 'text'   },
-                { label: 'Rental Date',  key: 'rentalDate', type: 'date'   },
-                { label: 'Due Date',     key: 'dueDate',    type: 'date'   },
-                { label: 'Price (₱)',    key: 'price',      type: 'number' },
+                { label: 'Item',        key: 'item',       type: 'text'   },
+                { label: 'Customer',    key: 'customer',   type: 'text'   },
+                { label: 'Contact',     key: 'contact',    type: 'text'   },
+                { label: 'Rental Date', key: 'rentalDate', type: 'date'   },
+                { label: 'Due Date',    key: 'dueDate',    type: 'date'   },
+                { label: 'Price (₱)',   key: 'price',      type: 'number' },
               ].map(({ label, key, type }) => (
                 <div className="modal-field" key={key}>
                   <label>{label}</label>
@@ -189,9 +168,7 @@ const Rentals = () => {
             </div>
             <div className="modal-footer">
               <button className="modal-cancel" onClick={() => setShowModal(false)}>Cancel</button>
-              <button className="modal-save" onClick={handleSave} disabled={saving}>
-                {saving ? 'Saving...' : editRental ? 'Save Changes' : 'Add Rental'}
-              </button>
+              <button className="modal-save" onClick={handleSave} disabled={saving}>{saving ? 'Saving...' : editRental ? 'Save Changes' : 'Add Rental'}</button>
             </div>
           </div>
         </div>
