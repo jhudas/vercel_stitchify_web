@@ -32,14 +32,20 @@ const Transaction = () => {
   const [form, setForm]           = useState(emptyForm);
   const [saving, setSaving]       = useState(false);
 
+  // Fetch items
   const fetchItems = async () => {
-    setLoading(true); setError('');
+    setLoading(true);
+    setError('');
     try {
-      const res = await apiFetch(API_PATH);
-      if (!res.ok) throw new Error('Failed to load transactions');
-      setItems(await res.json());
-    } catch (err) { setError(err.message); }
-    finally { setLoading(false); }
+      const res = await fetch(API);
+      if (!res.ok) throw new Error('Failed to load inventory');
+      const data = await res.json();
+      setItems(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchItems(); }, []);
@@ -52,10 +58,12 @@ const Transaction = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this item?')) return;
     try {
-      const res = await apiFetch(`${API_PATH}/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Delete failed');
       setItems(prev => prev.filter(i => i._id !== id));
-    } catch (err) { alert(err.message); }
+    } catch (err) {
+      alert(err.message);
+    }
   };
 
   const handleSave = async () => {
@@ -63,16 +71,23 @@ const Transaction = () => {
     setSaving(true);
     try {
       const method = editItem ? 'PUT' : 'POST';
-      const path   = editItem ? `${API_PATH}/${editItem._id}` : API_PATH;
-      const res = await apiFetch(path, {
+      const url    = editItem ? `${API}/${editItem._id}` : API;
+      const res = await fetch(url, {
         method,
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, quantity: Number(form.quantity), price: Number(form.price) }),
       });
-      if (!res.ok) { const d = await res.json(); throw new Error(d.message || 'Save failed'); }
+      if (!res.ok) {
+        const d = await res.json();
+        throw new Error(d.message || 'Save failed');
+      }
       await fetchItems();
       setShowModal(false);
-    } catch (err) { alert(err.message); }
-    finally { setSaving(false); }
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (

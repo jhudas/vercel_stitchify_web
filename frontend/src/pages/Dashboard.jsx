@@ -34,7 +34,7 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    apiFetch('/dashboard/stats')
+    fetch(API)
       .then(r => r.json())
       .then(data => setStats(data))
       .catch(() => {});

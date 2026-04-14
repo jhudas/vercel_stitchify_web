@@ -57,7 +57,7 @@ const Rentals = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this rental?')) return;
     try {
-      const res = await apiFetch(`${API_PATH}/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Delete failed');
       setRentals(prev => prev.filter(r => r._id !== id));
     } catch (err) { alert(err.message); }
@@ -68,9 +68,10 @@ const Rentals = () => {
     setSaving(true);
     try {
       const method = editRental ? 'PUT' : 'POST';
-      const path   = editRental ? `${API_PATH}/${editRental._id}` : API_PATH;
-      const res = await apiFetch(path, {
+      const url    = editRental ? `${API}/${editRental._id}` : API;
+      const res = await fetch(url, {
         method,
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, price: Number(form.price) }),
       });
       if (!res.ok) { const d = await res.json(); throw new Error(d.message || 'Save failed'); }

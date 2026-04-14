@@ -48,8 +48,9 @@ const Orders = () => {
 
   const handleStatusChange = async (id, status) => {
     try {
-      const res = await apiFetch(`${API_PATH}/${id}`, {
+      const res = await fetch(`${API}/${id}`, {
         method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
       });
       if (!res.ok) throw new Error('Update failed');
@@ -60,7 +61,7 @@ const Orders = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this order?')) return;
     try {
-      const res = await apiFetch(`${API_PATH}/${id}`, { method: 'DELETE' });
+      const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Delete failed');
       setOrders(prev => prev.filter(o => o._id !== id));
     } catch (err) { alert(err.message); }
@@ -71,9 +72,10 @@ const Orders = () => {
     setSaving(true);
     try {
       const method = editOrder ? 'PUT' : 'POST';
-      const path   = editOrder ? `${API_PATH}/${editOrder._id}` : API_PATH;
-      const res = await apiFetch(path, {
+      const url    = editOrder ? `${API}/${editOrder._id}` : API;
+      const res = await fetch(url, {
         method,
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, qty: Number(form.qty), price: Number(form.price) }),
       });
       if (!res.ok) { const d = await res.json(); throw new Error(d.message || 'Save failed'); }
