@@ -20,7 +20,7 @@ const STATUS_STYLE = {
 
 const fmt = (d) => d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) : '';
 
-const emptyForm = { type: 'customization', customer: '', contact: '', description: '', qty: '', price: '', dueDate: '', status: 'pending' };
+const emptyForm = { type: 'customization', customer: '', contact: '', qty: '', price: '', dueDate: '', status: 'pending' };
 
 const Orders = () => {
   const [orders, setOrders]       = useState([]);
@@ -67,7 +67,7 @@ const Orders = () => {
   };
 
   const handleSave = async () => {
-    if (!form.customer || !form.contact || !form.description || !form.qty || !form.price || !form.dueDate) return;
+    if (!form.customer || !form.contact || !form.qty || !form.price || !form.dueDate) return;
     setSaving(true);
     try {
       const method = editOrder ? 'PUT' : 'POST';
@@ -113,7 +113,6 @@ const Orders = () => {
                 <tr>
                   <th>Type</th>
                   <th>Customer</th>
-                  <th>Description</th>
                   <th>Qty</th>
                   <th>Price</th>
                   <th>Due Date</th>
@@ -122,8 +121,8 @@ const Orders = () => {
                 </tr>
               </thead>
               <tbody>
-                {loading && <tr><td colSpan={8} className="inv-empty">Loading...</td></tr>}
-                {!loading && error && <tr><td colSpan={8} className="inv-empty">{error}</td></tr>}
+                {loading && <tr><td colSpan={7} className="inv-empty">Loading...</td></tr>}
+                {!loading && error && <tr><td colSpan={7} className="inv-empty">{error}</td></tr>}
                 {!loading && !error && orders.map(o => {
                   const tb = TYPE_BADGE[o.type] || {};
                   const ss = STATUS_STYLE[o.status] || STATUS_STYLE.pending;
@@ -134,7 +133,6 @@ const Orders = () => {
                         <div style={{ fontWeight: 500 }}>{o.customer}</div>
                         <div style={{ fontSize: '12px', color: '#94a3b8' }}>{o.contact}</div>
                       </td>
-                      <td style={{ maxWidth: '220px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{o.description}</td>
                       <td>{o.qty}</td>
                       <td>₱{o.price.toLocaleString()}</td>
                       <td>{fmt(o.dueDate)}</td>
@@ -166,7 +164,7 @@ const Orders = () => {
                   );
                 })}
                 {!loading && !error && orders.length === 0 && (
-                  <tr><td colSpan={8} className="inv-empty">No orders found.</td></tr>
+                  <tr><td colSpan={7} className="inv-empty">No orders found.</td></tr>
                 )}
               </tbody>
             </table>
@@ -183,21 +181,17 @@ const Orders = () => {
             </div>
             <div className="modal-body">
               {[
-                { label: 'Customer',     key: 'customer',    type: 'text'   },
-                { label: 'Contact',      key: 'contact',     type: 'text'   },
-                { label: 'Qty',          key: 'qty',         type: 'number' },
-                { label: 'Price (₱)',    key: 'price',       type: 'number' },
-                { label: 'Due Date',     key: 'dueDate',     type: 'date'   },
+                { label: 'Customer',  key: 'customer', type: 'text'   },
+                { label: 'Contact',   key: 'contact',  type: 'text'   },
+                { label: 'Qty',       key: 'qty',      type: 'number' },
+                { label: 'Price (₱)', key: 'price',    type: 'number' },
+                { label: 'Due Date',  key: 'dueDate',  type: 'date'   },
               ].map(({ label, key, type }) => (
                 <div className="modal-field" key={key}>
                   <label>{label}</label>
                   <input type={type} value={form[key]} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} placeholder={label} />
                 </div>
               ))}
-              <div className="modal-field modal-field-full">
-                <label>Description</label>
-                <input type="text" value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} placeholder="Description" />
-              </div>
               <div className="modal-field">
                 <label>Type</label>
                 <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value }))}>
