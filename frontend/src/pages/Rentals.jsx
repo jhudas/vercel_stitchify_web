@@ -12,15 +12,8 @@ const STATUS_STYLE = {
   overdue:  { bg: '#fef2f2', color: '#ef4444' },
 };
 
-const fmt = (dateStr) => {
-  if (!dateStr) return '';
-  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
-};
-
-const toInputDate = (dateStr) => {
-  if (!dateStr) return '';
-  return new Date(dateStr).toISOString().split('T')[0];
-};
+const fmt = (d) => d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) : '';
+const toInputDate = (d) => d ? new Date(d).toISOString().split('T')[0] : '';
 
 const emptyForm = { item: '', customer: '', contact: '', rentalDate: '', dueDate: '', price: '', status: 'active' };
 
