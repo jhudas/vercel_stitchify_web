@@ -1,7 +1,12 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
 const SALT_ROUNDS = 10;
+
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+};
 
 // @desc    Authenticate user & get token
 // @route   POST /api/auth/login
@@ -24,6 +29,7 @@ export const loginUser = async (req, res) => {
     res.json({
       _id: user._id,
       username: user.username,
+      token: generateToken(user._id),
       message: 'Login successful!'
     });
   } catch (error) {
@@ -43,13 +49,13 @@ export const registerUser = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-
     const user = await User.create({ username, email, password: hashedPassword });
 
     res.status(201).json({
       _id: user._id,
       username: user.username,
       email: user.email,
+      token: generateToken(user._id),
       message: 'User created successfully!'
     });
   } catch (error) {

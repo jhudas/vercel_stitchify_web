@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Bell, Plus, Pencil, Trash2, X } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
+import { apiFetch } from '../services/api';
 import './Dashboard.css';
 import './Rentals.css';
 
-const API = 'https://stitchify-backend.onrender.com/api/rentals';
+const API_PATH = '/rentals';
 
 const STATUS_STYLE = {
   active:   { bg: '#f0fdf4', color: '#16a34a' },
@@ -37,7 +38,7 @@ const Rentals = () => {
   const fetchRentals = async () => {
     setLoading(true); setError('');
     try {
-      const res = await fetch(API);
+      const res = await apiFetch(API_PATH);
       if (!res.ok) throw new Error('Failed to load rentals');
       setRentals(await res.json());
     } catch (err) { setError(err.message); }
@@ -56,7 +57,7 @@ const Rentals = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this rental?')) return;
     try {
-      const res = await fetch(`${API}/${id}`, { method: 'DELETE' });
+      const res = await apiFetch(`${API_PATH}/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Delete failed');
       setRentals(prev => prev.filter(r => r._id !== id));
     } catch (err) { alert(err.message); }
@@ -67,10 +68,9 @@ const Rentals = () => {
     setSaving(true);
     try {
       const method = editRental ? 'PUT' : 'POST';
-      const url    = editRental ? `${API}/${editRental._id}` : API;
-      const res = await fetch(url, {
+      const path   = editRental ? `${API_PATH}/${editRental._id}` : API_PATH;
+      const res = await apiFetch(path, {
         method,
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, price: Number(form.price) }),
       });
       if (!res.ok) { const d = await res.json(); throw new Error(d.message || 'Save failed'); }
